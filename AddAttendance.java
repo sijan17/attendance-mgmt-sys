@@ -71,16 +71,18 @@ public class AddAttendance {
 		@SuppressWarnings("serial")
 		JTable table=new JTable(){
 			public boolean isCellEditable(int row,int column){
-					return false;
+					return column==3;
 			}
 		};
 		model = (DefaultTableModel)table.getModel();
 		model.addColumn("ID");
 		model.addColumn("NAME");
 		model.addColumn("STATUS");
+		model.addColumn("REMARKS");
 		table.getColumnModel().getColumn(0).setPreferredWidth(50);
 		table.getColumnModel().getColumn(1).setPreferredWidth(200);
 		table.getColumnModel().getColumn(2).setPreferredWidth(200);
+		table.getColumnModel().getColumn(3).setPreferredWidth(200);
 		JScrollPane scPane=new JScrollPane(table);
 		scPane.setBounds(500, 50, 480, 525);
 		frame.add(scPane);
@@ -193,7 +195,8 @@ public class AddAttendance {
 			public void actionPerformed(ActionEvent e) {
 				for(int i= 0; i<table.getRowCount(); i++) {
 					try {
-						addItem(Integer.parseInt(String.valueOf(table.getValueAt(i, 0))), String.valueOf(table.getValueAt(i, 2)), dtbox.getText(), String.valueOf(clss.getSelectedItem()));
+						System.out.println(String.valueOf(table.getValueAt(i, 3)));
+						addItem(Integer.parseInt(String.valueOf(table.getValueAt(i, 0))), String.valueOf(table.getValueAt(i, 2)), String.valueOf(table.getValueAt(i, 3)), dtbox.getText(), String.valueOf(clss.getSelectedItem()));
 					} catch (NumberFormatException | SQLException e1) {
 						e1.printStackTrace();
 					}
@@ -266,8 +269,9 @@ public class AddAttendance {
 		}
 	}
 	
-	public void addItem(int id, String status, String date, String classes) throws SQLException {
-		String adding = "INSERT INTO attend values("+id+", '"+date+"', '"+status+"', '"+classes+"')";
+	public void addItem(int id, String status, String remarks, String date, String classes) throws SQLException {
+		String adding = "INSERT INTO attend values("+id+", '"+date+"', '"+status+"', '"+classes+"','"+remarks+"')";
+		System.out.println(adding);
 		Statement stm = con.createStatement();
         stm.executeUpdate(adding);
 	}

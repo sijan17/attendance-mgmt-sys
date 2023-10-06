@@ -111,7 +111,7 @@ public class TeacherView {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setFocusable(true);
-        frame.getContentPane().setBackground(Color.decode("53B6E7"));
+        frame.getContentPane().setBackground(Color.decode("#53B6E7"));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //--------------------------------------------------------------
     }

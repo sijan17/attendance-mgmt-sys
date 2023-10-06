@@ -72,9 +72,10 @@ public class StudentView {
         model = (DefaultTableModel)table.getModel();
         model.addColumn("DATE");
         model.addColumn("STATUS");
+        model.addColumn("REMARKS");
         JScrollPane scPane=new JScrollPane(table);
         scPane.setBounds(500, 50, 480, 525);
-        table.setFont(new Font("Times New Roman", Font.BOLD, 20));
+        table.setFont(new Font("Times New Roman", Font.PLAIN, 15));
         table.setRowHeight(50);
         frame.add(scPane);
         //------------------------------------------------------
@@ -159,15 +160,17 @@ public class StudentView {
     public void tblupdt(int id) {
         try {
             ResultSet res = dbSearch(id);
-            for(int i=0; res.next(); i++) {
+            for (int i = 0; res.next(); i++) {
                 model.addRow(new Object[0]);
                 model.setValueAt(res.getString("dt"), i, 0);
                 model.setValueAt(res.getString("status"), i, 1);
+                model.setValueAt(res.getString("remarks"), i, 2); // Add remarks
             }
         } catch (SQLException e1) {
             e1.printStackTrace();
         }
     }
+
 
     public int[] stat(int id) throws SQLException {
         String str = "SELECT COUNT(*) AS pre FROM attend WHERE stid = "+id+" AND status = 'Present'";

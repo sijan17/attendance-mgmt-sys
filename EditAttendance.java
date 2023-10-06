@@ -83,9 +83,11 @@ public class EditAttendance {
         model.addColumn("ID");
         model.addColumn("NAME");
         model.addColumn("STATUS");
+        model.addColumn("REMARKS");
         table.getColumnModel().getColumn(0).setPreferredWidth(50);
         table.getColumnModel().getColumn(1).setPreferredWidth(200);
         table.getColumnModel().getColumn(2).setPreferredWidth(200);
+        table.getColumnModel().getColumn(3).setPreferredWidth(200);
         JScrollPane scPane=new JScrollPane(table);
         scPane.setBounds(500, 50, 480, 525);
         frame.add(scPane);
@@ -183,7 +185,7 @@ public class EditAttendance {
             public void actionPerformed(ActionEvent e) {
                 for(int i= 0; i<table.getRowCount(); i++) {
                     try {
-                        editItem(Integer.parseInt(String.valueOf(table.getValueAt(i, 0))), String.valueOf(table.getValueAt(i, 2)), dtbox.getText());
+                        editItem(Integer.parseInt(String.valueOf(table.getValueAt(i, 0))), String.valueOf(table.getValueAt(i, 2)), String.valueOf(table.getValueAt(i, 3)), dtbox.getText());
                     } catch (NumberFormatException | SQLException e1) {
                         e1.printStackTrace();
                     }
@@ -276,15 +278,19 @@ public class EditAttendance {
                 model.setValueAt(res.getInt("stid"), i, 0);
                 model.setValueAt(res.getString("name"), i, 1);
                 model.setValueAt(res.getString("status"), i, 2);
+                String remarks = res.getString("remarks");
+                if (remarks != null && !remarks.equals("null")) {
+                    model.setValueAt(remarks, i, 3);
+                } 
             }
         } catch (SQLException e1) {
             e1.printStackTrace();
         }
     }
 
-    public void editItem(int id, String status, String date) throws SQLException {
-        String adding = "UPDATE attend SET status = '"+status+"' WHERE stid = "+id+" AND dt = '"+date+"'";
-        Statement stm = con.createStatement();
+    public void editItem(int id, String status, String remarks, String date) throws SQLException {
+    	 String adding = "UPDATE attend SET status = '"+status+"', remarks = '"+remarks+"' WHERE stid = "+id+" AND dt = '"+date+"'";
+         Statement stm = con.createStatement();
         stm.executeUpdate(adding);
     }
 }
